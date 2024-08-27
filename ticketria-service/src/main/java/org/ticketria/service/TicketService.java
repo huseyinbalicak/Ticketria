@@ -8,10 +8,7 @@ import org.ticketria.client.payment.service.dto.response.enums.PaymentMethod;
 import org.ticketria.client.user.response.enums.UserType;
 import org.ticketria.client.user.service.UserClientService;
 import org.ticketria.converter.TicketPassengerConverter;
-import org.ticketria.dto.request.RequestPassenger;
-import org.ticketria.dto.request.SendEmailRequest;
-import org.ticketria.dto.request.TicketPurchaseRequest;
-import org.ticketria.dto.request.TicketRequest;
+import org.ticketria.dto.request.*;
 import org.ticketria.dto.response.FeignClientUserResponse;
 import org.ticketria.dto.response.PurchasedTicketInformationResponse;
 import org.ticketria.dto.response.TicketPurchaseResponse;
@@ -21,6 +18,8 @@ import org.ticketria.model.Passenger;
 import org.ticketria.model.Ticket;
 import org.ticketria.model.Trip;
 import org.ticketria.model.enums.Gender;
+import org.ticketria.model.enums.NotificationType;
+import org.ticketria.model.enums.RecipientType;
 import org.ticketria.producer.RabbitMqProducer;
 import org.ticketria.repository.PassengerRepository;
 import org.ticketria.repository.TicketRepository;
@@ -62,9 +61,13 @@ public class TicketService {
         //TODO :odeme yapıldı, yapılmadı response olarak dön, bilet alma işlemini gerçekleştir.
          paymentClientService.createPayment(new PaymentRequest(totalTicketPrice, PaymentMethod.CREDIT_CARD,userResponse.getEmail(),request));
 
-         rabbitMqProducer.sendNotification(new SendEmailRequest(userResponse.getEmail(),totalTicketPrice,
+         /*rabbitMqProducer.sendNotification(new SendEmailRequest(userResponse.getEmail(),totalTicketPrice,
                 foundTrip.getOriginCity()
-         ,foundTrip.getDestinationCity(),foundTrip.getVehicleType()));
+         ,foundTrip.getDestinationCity(),foundTrip.getVehicleType()));*/
+
+         rabbitMqProducer.sendNotification(new SendNotificationRequest(RecipientType.EMAIL,totalTicketPrice,
+                 foundTrip.getOriginCity()
+                 ,foundTrip.getDestinationCity(),foundTrip.getVehicleType(), NotificationType.EMAIL));
 
          return true;
 
