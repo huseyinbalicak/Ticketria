@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,6 +13,7 @@ import org.ticketria.dto.request.TripSearchRequest;
 import org.ticketria.model.Trip;
 import org.ticketria.repository.TripRepository;
 import org.ticketria.repository.spesification.TripSpecification;
+import org.ticketria.util.CacheNames;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,12 +21,17 @@ import org.ticketria.repository.spesification.TripSpecification;
 public class TripService {
     private final TripRepository tripRepository;
 
-    @CacheEvict(cacheNames = "trips", allEntries = true)
+    @Caching(
+            evict = {
+                    @CacheEvict(value = CacheNames.TRIPS, allEntries = true, condition = "#trip.tripNumber != null")
+            }
+    )
     public Trip addTrip(Trip trip) {
         return tripRepository.save(trip);
     }
 
-    @Cacheable(value = "trips", cacheNames = "trips")
+
+    @Cacheable(CacheNames.TRIPS)
     public Page<Trip> getAllTrips(TripSearchRequest request, Pageable pageable) {
         Specification<Trip> specification = TripSpecification.initSpecification(request);
         return tripRepository.findAll(specification, pageable);
