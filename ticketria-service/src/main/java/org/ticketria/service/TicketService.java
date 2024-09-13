@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import org.ticketria.client.payment.service.PaymentClientService;
 import org.ticketria.client.payment.service.dto.request.PaymentRequest;
 import org.ticketria.client.payment.service.dto.response.enums.PaymentMethod;
+import org.ticketria.client.user.response.UserResponse;
 import org.ticketria.client.user.response.enums.UserType;
 import org.ticketria.client.user.service.UserClientService;
 import org.ticketria.converter.TicketPassengerConverter;
 import org.ticketria.dto.request.*;
-import org.ticketria.dto.response.FeignClientUserResponse;
 import org.ticketria.dto.response.PurchasedTicketInformationResponse;
 import org.ticketria.dto.response.TicketPurchaseResponse;
 import org.ticketria.dto.response.TicketResponse;
@@ -44,7 +44,7 @@ public class TicketService {
 
      public boolean validateTicketPurchase(List<TicketPurchaseRequest> request, String tripNumber, String email) {
 
-        FeignClientUserResponse userResponse = userClientService.getUserByEmail(email);
+        UserResponse userResponse = userClientService.getUserByEmail(email);
 
         Trip foundTrip = tripRepository.findByTripNumber(tripNumber);
 
@@ -52,11 +52,11 @@ public class TicketService {
             throw new TripNotFoundException(tripNumber);
         }
 
-         BigDecimal totalTicketPrice=calculateTotalPrice(request, foundTrip, userResponse.getUserId());
+         BigDecimal totalTicketPrice=calculateTotalPrice(request, foundTrip, userResponse.getId());
 
-         validatePassengerCounts(request,tripNumber, userResponse.getUserId(),userResponse.getUserType());
+         validatePassengerCounts(request,tripNumber, userResponse.getId(),userResponse.getUserType());
          validateSeatNumbers(request, foundTrip);
-         saveTicketsAndPassengers(request, foundTrip, userResponse.getUserId());
+         saveTicketsAndPassengers(request, foundTrip, userResponse.getId());
 
         //TODO :odeme yapıldı, yapılmadı response olarak dön, bilet alma işlemini gerçekleştir.
          paymentClientService.createPayment(new PaymentRequest(totalTicketPrice, PaymentMethod.CREDIT_CARD,userResponse.getEmail(),request));
@@ -75,8 +75,8 @@ public class TicketService {
 
     public List<PurchasedTicketInformationResponse> purchasedTicketInformationResponse(String email/*,String tripNumber*/ )
     {
-        FeignClientUserResponse userResponse = userClientService.getUserByEmail(email);
-        List<Ticket> tickets = ticketRepository.findByUserId(userResponse.getUserId());
+        UserResponse userResponse = userClientService.getUserByEmail(email);
+        List<Ticket> tickets = ticketRepository.findByUserId(userResponse.getId());
 
         List<PurchasedTicketInformationResponse> responses = new ArrayList<>();
         for (Ticket ticket : tickets) {
@@ -179,9 +179,9 @@ public class TicketService {
 
     public TicketPurchaseResponse getTicketsByEmail(String email) {
 
-        FeignClientUserResponse userResponse = userClientService.getUserByEmail(email);
+        UserResponse userResponse = userClientService.getUserByEmail(email);
 
-        List<Ticket> tickets = ticketRepository.findByUserId(userResponse.getUserId());
+        List<Ticket> tickets = ticketRepository.findByUserId(userResponse.getId());
 
         List<TicketResponse> ticketResponses = tickets.stream()
                 .map(TicketPassengerConverter::toTicketResponse)

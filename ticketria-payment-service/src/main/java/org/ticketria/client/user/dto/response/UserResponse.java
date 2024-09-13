@@ -6,11 +6,12 @@ import org.ticketria.client.user.dto.response.enums.UserType;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class UserResponse {
 
-    private Long userId;
+    private long id;
+    private String username;
     private String email;
+    private String phoneNumber;
     private UserType userType;
-    private String bio;
+
 }

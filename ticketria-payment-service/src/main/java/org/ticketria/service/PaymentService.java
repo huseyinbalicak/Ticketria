@@ -2,7 +2,7 @@ package org.ticketria.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.ticketria.client.user.dto.response.FeignClientUserResponse;
+import org.ticketria.client.user.dto.response.UserResponse;
 import org.ticketria.client.user.service.UserClientService;
 import org.ticketria.converter.PaymentConverter;
 import org.ticketria.dto.request.PaymentRequest;
@@ -32,14 +32,14 @@ public class PaymentService {
 
     public PaymentResponse createPayment(PaymentRequest request) {
 
-        FeignClientUserResponse foundUser = userClientService.getUserByEmail(request.getEmail());
+        UserResponse foundUser = userClientService.getUserByEmail(request.getEmail());
 
         List<PurchasedTicketInformationResponse> purchasedTicketInformationResponses=ticketClientService.
                 purchasedTicketInformationResponse(foundUser.getEmail());
 
 
         if (foundUser == null) {
-            throw new NotFoundException(foundUser.getUserId());
+            throw new NotFoundException(foundUser.getId());
         }
 
         Payment payment = PaymentConverter.toEntity(request, PaymentStatus.PAID);

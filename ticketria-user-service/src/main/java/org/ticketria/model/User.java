@@ -20,19 +20,20 @@ public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    String username;
-    String firstName;
-    String lastName;
-    String email;
-    String password;
-    boolean active = false;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    private String password;
+    private boolean active = false;
 
-    String activationToken;
-    String image;
+    private String activationToken;
+    private String image;
 
-    String passwordResetToken;
+    private String passwordResetToken;
 
     @Enumerated(EnumType.STRING)
     private UserType userType;

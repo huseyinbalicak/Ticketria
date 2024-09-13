@@ -36,22 +36,17 @@ public class UserController {
         return UserConverter.toResponse(userService.listUsers());
     }
 
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     UserResponse getUserById(@PathVariable long id){
         return new UserResponse(userService.getUser(id));
-    }
+    }*/
 
-    @GetMapping("email/{email}")
+    @GetMapping("/{email}")
     UserResponse getUserByEmail(@PathVariable String email)
     {
         return new UserResponse(userService.findByEmail(email));
     }
 
-    @GetMapping("/feign/{email}")
-    FeignClientUserResponse findUserByEmail(@PathVariable String email)
-    {
-        return new FeignClientUserResponse(userService.findByEmail(email));
-    }
 
     @GetMapping("/auth/{email}")
     FeignAuthUserResponse findUserByAuthEmail(@PathVariable String email)
