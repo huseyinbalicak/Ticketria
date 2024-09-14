@@ -11,7 +11,7 @@ import org.ticketria.util.CacheNames;
 @Profile("!prod")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cache")
+@RequestMapping("api/v1/trips/admin/cache")
 public class CacheController {
 
     private final ICacheService cacheService;

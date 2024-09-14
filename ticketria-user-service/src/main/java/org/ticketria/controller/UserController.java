@@ -5,7 +5,10 @@ import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.ticketria.converter.UserConverter;
-import org.ticketria.dto.*;
+import org.ticketria.dto.UserAuthInfo;
+import org.ticketria.dto.UserCreate;
+import org.ticketria.dto.UserResponse;
+import org.ticketria.dto.UserUpdate;
 import org.ticketria.generic.GenericMessage;
 import org.ticketria.messages.CustomMessageSource;
 import org.ticketria.service.UserService;
@@ -47,12 +50,13 @@ public class UserController {
         return new UserResponse(userService.findByEmail(email));
     }
 
-
     @GetMapping("/auth/{email}")
-    FeignAuthUserResponse findUserByAuthEmail(@PathVariable String email)
+    UserAuthInfo findUserByAuthEmail(@PathVariable String email)
     {
-        return new FeignAuthUserResponse(userService.findByEmail(email));
+        return new UserAuthInfo(userService.findByEmail(email));
     }
+
+
 
     @PatchMapping("/activate/{token}")
     public GenericMessage activateUser(@PathVariable String token)

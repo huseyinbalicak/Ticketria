@@ -1,15 +1,12 @@
 package org.ticketria.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ticketria.converter.TripConverter;
-import org.ticketria.dto.request.TripRequest;
 import org.ticketria.dto.request.TripSearchRequest;
 import org.ticketria.dto.response.GenericResponse;
 import org.ticketria.dto.response.TripResponse;
@@ -18,28 +15,16 @@ import org.ticketria.model.Trip;
 import org.ticketria.service.TripService;
 
 @RestController
-@RequestMapping("api/v1/trips")
+@RequestMapping("api/v1/trips/user")
 public class TripController {
-
 
     private final TripService tripService;
 
-    private final TripConverter tripConverter;
 
-
-    public TripController(TripService tripService, TripConverter tripConverter) {
+    public TripController(TripService tripService) {
         this.tripService = tripService;
-        this.tripConverter = tripConverter;
+
     }
-
-
-
-    @PostMapping
-    public ResponseEntity<TripResponse> createTrip(@RequestBody @Valid TripRequest request) {
-        Trip savedTrip=tripService.addTrip(tripConverter.convertToEntity(request));
-        return new ResponseEntity<>(TripConverter.toResponse(savedTrip), HttpStatus.CREATED);
-    }
-
 
     @GetMapping("/{tripNumber}")
     public TripResponse getTrip(@PathVariable String tripNumber)
@@ -56,12 +41,5 @@ public class TripController {
         Page<Trip> trips = tripService.getAllTrips(request, pageable);
         return GenericResponse.success(TripConverter.toResponse(trips), HttpStatus.OK);
     }
-
-
-    @DeleteMapping("/{tripNumber}")
-    public void cancelTrip(@PathVariable String tripNumber) {
-        tripService.cancelTrip(tripNumber);
-    }
-
 
 }

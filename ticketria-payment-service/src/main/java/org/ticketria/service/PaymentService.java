@@ -2,16 +2,13 @@ package org.ticketria.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.ticketria.client.user.dto.response.UserResponse;
 import org.ticketria.client.user.service.UserClientService;
 import org.ticketria.converter.PaymentConverter;
 import org.ticketria.dto.request.PaymentRequest;
 import org.ticketria.dto.response.PaymentResponse;
-import org.ticketria.exception.NotFoundException;
 import org.ticketria.model.Payment;
 import org.ticketria.model.PaymentStatus;
 import org.ticketria.repository.PaymentRepository;
-import org.ticketria.ticket.PurchasedTicketInformationResponse;
 import org.ticketria.ticket.TicketClientService;
 
 import java.util.List;
@@ -32,15 +29,15 @@ public class PaymentService {
 
     public PaymentResponse createPayment(PaymentRequest request) {
 
-        UserResponse foundUser = userClientService.getUserByEmail(request.getEmail());
+       /* UserResponse foundUser = userClientService.getUserByEmail(request.getEmail());*/
 
-        List<PurchasedTicketInformationResponse> purchasedTicketInformationResponses=ticketClientService.
+    /*    List<PurchasedTicketInformationResponse> purchasedTicketInformationResponses=ticketClientService.
                 purchasedTicketInformationResponse(foundUser.getEmail());
 
 
         if (foundUser == null) {
             throw new NotFoundException(foundUser.getId());
-        }
+        }*/
 
         Payment payment = PaymentConverter.toEntity(request, PaymentStatus.PAID);
 

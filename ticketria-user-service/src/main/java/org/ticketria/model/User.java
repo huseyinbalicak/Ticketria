@@ -2,14 +2,10 @@ package org.ticketria.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.ticketria.model.enums.Role;
 import org.ticketria.model.enums.UserType;
-
-import java.util.Set;
-
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -38,10 +34,7 @@ public class User  {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-
-    private Set<Role> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

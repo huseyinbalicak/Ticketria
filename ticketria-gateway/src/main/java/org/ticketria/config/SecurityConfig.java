@@ -14,8 +14,6 @@ import reactor.core.publisher.Mono;
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
@@ -29,7 +27,9 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers( "/api/v1/auth/**").permitAll()
-                        .pathMatchers("/api/v1/users/**","/api/v1/trips/user/**").hasRole("ROLE_USER")
+                        .pathMatchers("/api/v1/trips/admin/**",
+                                "/api/v1/users/roles/**").hasRole("ADMIN")
+                        .pathMatchers("/api/v1/user/**","/api/v1/trips/user/**").hasRole("USER")
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)

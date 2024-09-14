@@ -4,8 +4,8 @@ package org.ticketria.client.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.ticketria.client.user.UserClient;
-import org.ticketria.client.user.response.FeignAuthUserResponse;
 import org.ticketria.dto.GenericMessage;
+import org.ticketria.dto.UserAuthInfo;
 import org.ticketria.dto.UserCreate;
 
 @Service
@@ -14,7 +14,7 @@ public class UserClientService {
 
     private final UserClient userClient;
 
-    public FeignAuthUserResponse getUserByEmail(String email){
+    public UserAuthInfo getUserByEmail(String email){
         return userClient.getUserByEmail(email);
     }
 

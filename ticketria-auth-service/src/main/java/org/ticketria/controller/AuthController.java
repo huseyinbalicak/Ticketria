@@ -1,21 +1,25 @@
 package org.ticketria.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
-import org.ticketria.client.user.response.FeignAuthUserResponse;
-import org.ticketria.dto.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.ticketria.dto.AuthResponse;
+import org.ticketria.dto.Credentials;
+import org.ticketria.dto.GenericMessage;
+import org.ticketria.dto.UserCreate;
 import org.ticketria.service.AuthService;
-import org.ticketria.token.JwtTokenService;
 
 @RequestMapping("/api/v1/auth")
 @RestController
 public class AuthController {
     private final AuthService authService;
-    private final JwtTokenService jwtTokenService;
 
-    public AuthController(AuthService authService, JwtTokenService jwtTokenService) {
+
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.jwtTokenService = jwtTokenService;
+
     }
 
     @PostMapping("/login")
@@ -27,18 +31,8 @@ public class AuthController {
     @PostMapping("/register")
     GenericMessage register(@Valid @RequestBody UserCreate request)
     {
-        authService.createUser(request);
+        authService.register(request);
         return new GenericMessage("Hesabınızı aktifleştirmek için mail adresinizi kontrol ediniz.");
-    }
-
-
-
-
-    @GetMapping("/verify-token")
-    public FeignAuthUserResponse verifyToken(
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
-
-        return jwtTokenService.verifyToken(authorizationHeader);
     }
 
 }

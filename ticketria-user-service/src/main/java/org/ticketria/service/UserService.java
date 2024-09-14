@@ -34,8 +34,11 @@ public class UserService {
         try{
             user.setPassword(PasswordUtils.generateHashedPassword(user.getPassword()));
             user.setActivationToken(UUID.randomUUID().toString());
+
             roleService.addDefaultRole(user);
+            /*user.setRole(Role.USER);*/
             userRepository.save(user);
+
             rabbitMqProducer.sendEmail(new SendEmailRequest(user.getEmail(), user.getActivationToken()));
         }
         catch (DataIntegrityViolationException exception)
@@ -85,7 +88,9 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user=getUser(id);
+/*
         user.getRoles().clear();
+*/
         userRepository.delete(user);
     }
 }
