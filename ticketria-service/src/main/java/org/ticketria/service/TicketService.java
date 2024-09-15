@@ -9,7 +9,10 @@ import org.ticketria.client.user.response.UserResponse;
 import org.ticketria.client.user.response.enums.UserType;
 import org.ticketria.client.user.service.UserClientService;
 import org.ticketria.converter.TicketPassengerConverter;
-import org.ticketria.dto.request.*;
+import org.ticketria.dto.request.RequestPassenger;
+import org.ticketria.dto.request.SendNotificationRequest;
+import org.ticketria.dto.request.TicketPurchaseRequest;
+import org.ticketria.dto.request.TicketRequest;
 import org.ticketria.dto.response.PurchasedTicketInformationResponse;
 import org.ticketria.dto.response.TicketPurchaseResponse;
 import org.ticketria.dto.response.TicketResponse;
@@ -19,7 +22,6 @@ import org.ticketria.model.Ticket;
 import org.ticketria.model.Trip;
 import org.ticketria.model.enums.Gender;
 import org.ticketria.model.enums.NotificationType;
-import org.ticketria.model.enums.RecipientType;
 import org.ticketria.producer.RabbitMqProducer;
 import org.ticketria.repository.PassengerRepository;
 import org.ticketria.repository.TicketRepository;
@@ -65,9 +67,9 @@ public class TicketService {
                 foundTrip.getOriginCity()
          ,foundTrip.getDestinationCity(),foundTrip.getVehicleType()));*/
 
-         rabbitMqProducer.sendNotification(new SendNotificationRequest(RecipientType.EMAIL,totalTicketPrice,
+         rabbitMqProducer.sendNotification(new SendNotificationRequest(userResponse.getEmail(),userResponse.getPhoneNumber(),totalTicketPrice,
                  foundTrip.getOriginCity()
-                 ,foundTrip.getDestinationCity(),foundTrip.getVehicleType(), NotificationType.EMAIL));
+                 ,foundTrip.getDestinationCity(),foundTrip.getVehicleType(), List.of(NotificationType.EMAIL,NotificationType.SMS)));
 
          return true;
 

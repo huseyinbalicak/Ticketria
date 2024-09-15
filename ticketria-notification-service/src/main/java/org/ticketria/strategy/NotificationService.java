@@ -1,29 +1,22 @@
 package org.ticketria.strategy;
 
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+@Setter
+@Slf4j
 @Service
 public class NotificationService {
 
-    private final Map<NotificationType, NotificationStrategy> strategies;
+    private NotificationStrategy notificationStrategy;
 
-    public NotificationService(List<NotificationStrategy> strategyList) {
-        strategies = strategyList.stream().collect(Collectors.toMap(
-                NotificationStrategy::getNotificationType,
-                strategy -> strategy
-        ));
+    public NotificationService(NotificationStrategy notificationStrategy) {
+        this.notificationStrategy = notificationStrategy;
     }
 
-    public void sendNotification(SendNotificationRequest request) {
-        NotificationStrategy strategy = strategies.get(request.notificationType());
-        if (strategy != null) {
-            strategy.send(request);
-        } else {
-            throw new UnsupportedOperationException("Bildirim tipi desteklenmiyor: " + request.notificationType());
-        }
+
+    public void send(SendNotificationRequest request) {
+        notificationStrategy.send(request);
     }
 }

@@ -27,7 +27,7 @@ public class Ticket {
 
     private Long userId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Passenger passenger;
 
     private BigDecimal price;

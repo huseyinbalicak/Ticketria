@@ -15,16 +15,12 @@ public class SMSNotificationStrategy implements NotificationStrategy {
     @Override
     public void send(SendNotificationRequest request) {
         smsService.sendPaymentDetailSms(
-            request.phoneNumber(),
-            request.totalTicketPrice(),
-            request.arrivalLocation(),
-            request.departureLocation(),
-            request.vehicleType()
+            request.getPhoneNumber(),
+            request.getTotalTicketPrice(),
+            request.getArrivalLocation(),
+            request.getDepartureLocation(),
+            request.getVehicleType()
         );
     }
 
-    @Override
-    public NotificationType getNotificationType() {
-        return NotificationType.SMS;
-    }
 }

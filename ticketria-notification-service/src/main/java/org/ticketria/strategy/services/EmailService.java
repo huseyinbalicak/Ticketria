@@ -150,21 +150,4 @@ public class EmailService {
         emailRepository.save(sentEmail);
     }
 
-   /* public void sendPasswordResetEmail(String email, String passwordResetToken) {
-        String passwordResetUrl = applicationProperties.getClient().host() + "/password-reset/set?tk=" + passwordResetToken;
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
-        var title = "Reset your password";
-        var clickHere = messageSource.getMessage("app.mail.click.here", null, LocaleContextHolder.getLocale());
-        var mailBody = activationEmail.replace("${url}", passwordResetUrl).replace("${title}", title).replace("${clickHere}", clickHere);
-        try {
-            message.setFrom(applicationProperties.getEmail().from());
-            message.setTo(email);
-            message.setSubject(title);
-            message.setText(mailBody, true);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        this.javaMailSender.send(mimeMessage);
-    }*/
 }
