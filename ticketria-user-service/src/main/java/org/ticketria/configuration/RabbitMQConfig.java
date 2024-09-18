@@ -15,17 +15,17 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Value("${rabbitmq.email.queue}")
-    private String queueName;
+    private String queueEmail;
 
     @Value("${rabbitmq.exchange}")
     private String exchange;
 
     @Value("${rabbitmq.routingkey}")
-    private String routingkey;
+    private String routingKey;
 
     @Bean
-    public Queue queue() {
-        return new Queue(queueName, false);
+    public Queue queueEmail() {
+        return new Queue(queueEmail, false);
     }
 
     @Bean
@@ -35,7 +35,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
     @Bean

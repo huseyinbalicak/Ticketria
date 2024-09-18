@@ -21,13 +21,13 @@ public class RabbitMqProducer  {
     public void sendNotification(SendEmailRequest sendEmailRequest) {
         rabbitTemplate.convertAndSend(rabbitMQConfig.getExchange(), rabbitMQConfig.getRoutingkey(), sendEmailRequest);
 
-        log.info("message kuyruğa gönderildi. kuyruk:{}, message: {}", rabbitMQConfig.getQueueName(), sendEmailRequest);
+        log.info("message kuyruğa gönderildi. kuyruk:{}, message: {}", rabbitMQConfig.getQueueTicket(), sendEmailRequest);
 
     }
 
     public void sendNotification(SendNotificationRequest sendNotificationRequest) {
         rabbitTemplate.convertAndSend(rabbitMQConfig.getExchange(), rabbitMQConfig.getRoutingkey(), sendNotificationRequest);
-        log.info("Mesaj kuyruğa gönderildi: {}, message: {}", rabbitMQConfig.getQueueName(), sendNotificationRequest);
+        log.info("Mesaj kuyruğa gönderildi: {}, message: {}", rabbitMQConfig.getQueueTicket(), sendNotificationRequest);
     }
 
 

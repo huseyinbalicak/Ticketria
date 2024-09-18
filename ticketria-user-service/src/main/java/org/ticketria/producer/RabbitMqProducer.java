@@ -17,9 +17,9 @@ public class RabbitMqProducer {
     private final RabbitMQConfig rabbitMQConfig;
 
     public void sendEmail(SendEmailRequest sendEmailRequest) {
-        rabbitTemplate.convertAndSend(rabbitMQConfig.getExchange(), rabbitMQConfig.getRoutingkey(), sendEmailRequest);
+        rabbitTemplate.convertAndSend(rabbitMQConfig.getExchange(), rabbitMQConfig.getRoutingKey(), sendEmailRequest);
 
-        log.info("message kuyruğa gönderildi. kuyruk:{}, message: {}", rabbitMQConfig.getQueueName(), sendEmailRequest);
+        log.info("message kuyruğa gönderildi. kuyruk:{}, message: {}", rabbitMQConfig.getQueueEmail(), sendEmailRequest);
 
     }
 

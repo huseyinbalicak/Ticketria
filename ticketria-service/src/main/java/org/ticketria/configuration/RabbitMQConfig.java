@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Value("${rabbitmq.purchase.ticket.queue}")
-    private String queueName;
+    private String queueTicket;
 
     @Value("${rabbitmq.purchase.ticket.exchange}")
     private String exchange;
@@ -24,8 +24,8 @@ public class RabbitMQConfig {
     private String routingkey;
 
     @Bean
-    public Queue queue() {
-        return new Queue(queueName, false);
+    public Queue queueTicket() {
+        return new Queue(queueTicket, false);
     }
 
     @Bean
