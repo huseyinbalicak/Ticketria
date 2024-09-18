@@ -25,6 +25,7 @@
         <module>ticketria-notification-service</module>
         <module>ticketria-service</module>
         <module>ticketria-auth-service</module>
+        <module>ticketria-log-service</module>
 
     </modules>
 

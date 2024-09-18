@@ -7,12 +7,19 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.ticketria.messages.CustomMessageSource;
+import org.ticketria.producer.KafkaProducer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class ErrorHandler {
+
+    private final KafkaProducer kafkaProducer;
+
+    public ErrorHandler(KafkaProducer kafkaProducer) {
+        this.kafkaProducer = kafkaProducer;
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, HttpServletRequest request)
@@ -31,6 +38,7 @@ public class ErrorHandler {
         }
 
         apiError.setValidationErrors(validationErrors);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.badRequest().body(apiError);
     }
 
@@ -43,6 +51,7 @@ public class ErrorHandler {
         apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatusCode(404);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.status(404).body(apiError);
     }
 
@@ -53,6 +62,7 @@ public class ErrorHandler {
         apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatusCode(404);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.status(404).body(apiError);
     }
 
@@ -63,6 +73,7 @@ public class ErrorHandler {
         apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatusCode(400);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.status(400).body(apiError);
     }
 
@@ -74,6 +85,7 @@ public class ErrorHandler {
         apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatusCode(400);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.status(400).body(apiError);
     }
 
@@ -84,6 +96,7 @@ public class ErrorHandler {
         apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatusCode(400);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.status(400).body(apiError);
     }
 
@@ -94,6 +107,7 @@ public class ErrorHandler {
         apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatusCode(400);
+        kafkaProducer.sendExceptionLog(apiError);
         return ResponseEntity.status(400).body(apiError);
     }
 }
